@@ -1,37 +1,23 @@
 from django import forms
-from .models import Appointment, MedicalRecord, Billing, Payment, Insurance
+from .models import Patient, MedicalRecord, Appointment, TreatmentPlan
 
-
-class AppointmentForm(forms.ModelForm):
-    appointment_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    appointment_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}))
-
+class PatientForm(forms.ModelForm):
     class Meta:
-        model = Appointment
-        fields = ['department', 'appointment_date', 'appointment_time', 'description']
+        model = Patient
+        fields = ['date_of_birth', 'contact_info']  # Add more fields as needed
 
 class MedicalRecordForm(forms.ModelForm):
     class Meta:
         model = MedicalRecord
         fields = ['diagnosis', 'medications', 'allergies', 'treatment_history']
 
-class BillingForm(forms.ModelForm):
-    due_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+class AppointmentForm(forms.ModelForm):
     class Meta:
-        model = Billing
-        fields = ['invoice_number', 'amount', 'due_date']
+        model = Appointment
+        fields = ['appointment_date', 'purpose']
 
-class PaymentForm(forms.ModelForm):
-    expiry_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    cvv = forms.CharField(max_length=4, widget=forms.TextInput(attrs={'type': 'text'}))
-
+class TreatmentPlanForm(forms.ModelForm):
     class Meta:
-        model = Payment
-        fields = ['amount_paid', 'expiry_date', 'cvv']
-
-class InsuranceForm(forms.ModelForm):
-    class Meta:
-        model = Insurance
-        fields = ['provider_name', 'policy_number', 'coverage_details']
-
+        model = TreatmentPlan
+        fields = ['plan_description', 'start_date', 'end_date']
 

@@ -1,41 +1,27 @@
-from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.db import models
+from django.conf import settings
 
-class Appointment(models.Model):
-    DEPARTMENT_CHOICES = [
-        ('Cardiology', 'Cardiology'),
-        ('Neurology', 'Neurology'),
-        ('Orthopedics', 'Orthopedics'),
-        ('Pediatrics', 'Pediatrics'),
-        ('General', 'General'),
-    ]
-
-    STATUS_CHOICES = [
-        ('Scheduled', 'Scheduled'),
-        ('Rescheduled', 'Rescheduled'),
-        ('Cancelled', 'Cancelled'),
-    ]
-
-    patient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    department = models.CharField(max_length=100, choices=DEPARTMENT_CHOICES, default='General')
-    appointment_date = models.DateField()
-    appointment_time = models.TimeField()
-    description = models.TextField(blank=True, null=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Scheduled')
-    rescheduled_date = models.DateField(blank=True, null=True)
-    rescheduled_time = models.TimeField(blank=True, null=True)
+class Patient(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date_of_birth = models.DateField(null=True, blank=True)
+    contact_info = models.CharField(max_length=100, blank=True)
+    # Add other fields as needed for patient information
 
     def __str__(self):
-        return f"Appointment for {self.patient.username} in {self.department}"
+        return f"Patient: {self.user.get_full_name()}"
 
+    def get_medical_records(self):
+        return MedicalRecord.objects.filter(patient=self)
+
+    def get_appointments(self):
+        return Appointment.objects.filter(patient=self)
 
 class MedicalRecord(models.Model):
     DIAGNOSIS_CHOICES = [
         ('Blood Analysis', (
             ('blood_count', 'Blood Count'),
             ('glucose_tolerance_test', 'Glucose Tolerance Test'),
-            ('enzyme_analysis', 'Enzyme Analysis')
+            ('enzyme_analysis', 'Enzyme Analysis'),
         )),
         ('Angiography', (
             ('cerebral_angiography', 'Cerebral Angiography'),
@@ -43,51 +29,40 @@ class MedicalRecord(models.Model):
         ('Brain Scanning', (
             ('echoencephalography', 'Echoencephalography'),
             ('magnetoencephalography', 'Magnetoencephalography'),
-            ('pneumoencephalography', 'Pneumoencephalography')
+            ('pneumoencephalography', 'Pneumoencephalography'),
         )),
         ('Skin Test', (
             ('patch_test', 'Patch Test'),
             ('schick_test', 'Schick Test'),
-            ('tuberculin_test', 'Tuberculin Test')
+            ('tuberculin_test', 'Tuberculin Test'),
         )),
     ]
 
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     diagnosis = models.CharField(max_length=255, choices=DIAGNOSIS_CHOICES)
     medications = models.TextField(blank=True)
     allergies = models.TextField(blank=True)
     treatment_history = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    patient = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='medical_records')
 
     def __str__(self):
-        return f"Medical record for {self.patient.username}"
+        return f"Medical record for {self.patient.user.get_full_name()}"
 
-class Billing(models.Model):
-    patient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    invoice_number = models.CharField(max_length=100)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    due_date = models.DateField()
-
-    def __str__(self):
-        return f"Billing for {self.patient.username}: Invoice {self.invoice_number}"
-
-class Payment(models.Model):
-    billing = models.ForeignKey(Billing, on_delete=models.CASCADE)
-    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_date = models.DateField(auto_now_add=True)
+class Appointment(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    appointment_date = models.DateTimeField()
+    purpose = models.TextField()
 
     def __str__(self):
-        return f"Payment of {self.amount_paid} for {self.billing}"
+        return f"Appointment for {self.patient.user.get_full_name()} on {self.appointment_date}"
 
-class Insurance(models.Model):
-    patient = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    provider_name = models.CharField(max_length=255)
-    policy_number = models.CharField(max_length=100)
-    coverage_details = models.TextField(blank=True)
+class TreatmentPlan(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    plan_description = models.TextField()
+    start_date = models.DateField()
+    end_date = models.DateField()
 
     def __str__(self):
-        return f"Insurance for {self.patient.username}"
+        return f"Treatment plan for {self.patient.user.get_full_name()}"
 
-
-
-
+# Other models related to doctor's functionalities can be added here as needed.

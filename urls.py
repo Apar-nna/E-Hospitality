@@ -1,26 +1,19 @@
-# authentication/patient/urls.py
 from django.urls import path
 from . import views
-from .views import appointment_create, AppointmentListView, AppointmentRescheduleView, MedicalRecordListView, \
-    MedicalRecordDetailView, MedicalRecordCreateView, MedicalRecordUpdateView, BillingCreateView, PaymentCreateView, \
-    InsuranceDetailView, InsuranceCreateView, InsuranceUpdateView
-app_name = 'patient'
+
+app_name = 'doctor'
+
 urlpatterns = [
-    path('appointment/', appointment_create, name='appointment'),
-    path('appointments/', AppointmentListView.as_view(), name='appointments'),
-    path('appointment/reschedule/<int:pk>/', AppointmentRescheduleView.as_view(), name='appointment-reschedule'),
-    path('appointment/cancel/<int:pk>/', views.cancel_appointment, name='appointment-cancel'),
-    path('medical-records/', MedicalRecordListView.as_view(), name='medical-record-list'),
-    path('medical-records/<int:pk>/', MedicalRecordDetailView.as_view(), name='medical-record-detail'),
-    path('medical-records/new/', MedicalRecordCreateView.as_view(), name='medical-record-create'),
-    path('medical-records/<int:pk>/update/', MedicalRecordUpdateView.as_view(), name='medical-record-update'),
-    path('billing/create/', views.BillingCreateView.as_view(), name='billing-create'),
-    path('payment/create/<int:pk>/', views.PaymentCreateView.as_view(), name='payment-create'),
-    path('payments/', views.PaymentListView.as_view(), name='payments'),
-    path('insurance/', InsuranceDetailView.as_view(), name='insurance-detail'),
-    path('insurance/create/', InsuranceCreateView.as_view(), name='insurance-create'),
-    path('insurance/update/', InsuranceUpdateView.as_view(), name='insurance-update'),
+    path('patients/', views.PatientListView.as_view(), name='patient_list'),
+    path('patients/create/', views.PatientCreateView.as_view(), name='patient_create'),
+    path('patients/<int:pk>/update/', views.PatientUpdateView.as_view(), name='patient_update'),
 
+    path('medical-records/create/', views.MedicalRecordCreateView.as_view(), name='medical_record_create'),
+    path('medical-records/<int:pk>/update/', views.MedicalRecordUpdateView.as_view(), name='medical_record_update'),
 
-    # Add more URLs as needed
+    path('appointments/create/', views.AppointmentCreateView.as_view(), name='appointment_create'),
+    path('appointments/<int:pk>/update/', views.AppointmentUpdateView.as_view(), name='appointment_update'),
+
+    path('treatment-plans/create/', views.TreatmentPlanCreateView.as_view(), name='treatment_plan_create'),
+    path('treatment-plans/<int:pk>/update/', views.TreatmentPlanUpdateView.as_view(), name='treatment_plan_update'),
 ]
