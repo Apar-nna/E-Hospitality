@@ -1,0 +1,11 @@
+<!-- authentication/templates/authentication/admin_dashboard.html -->
+{% extends 'authentication/base.html' %}
+{% block title %}Module A Home{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Module A Home Page</h2>
+    <!-- Add content specific to Module A home page -->
+     <a href="{% url 'logout' %}">Logout</a>
+</div>
+{% endblock %}
