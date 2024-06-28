@@ -1,0 +1,20 @@
+<!-- doctor/templates/doctor/patient_list.html -->
+{% extends 'authentication/base.html' %}
+
+{% load static %}
+
+{% block title %}Patient List{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Patient List</h2>
+    <ul>
+        {% for patient in patients %}
+        <li><a href="{% url 'doctor:patient_detail' patient.pk %}">{{ patient.user.get_full_name }}</a></li>
+        {% empty %}
+        <li>No patients found.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+

@@ -1,0 +1,36 @@
+<!-- doctor/templates/doctor/patient_detail.html -->
+{% extends 'authentication/base.html' %}
+{% load static %}
+
+{% block title %}Patient Details: {{ object.user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Patient Details: {{ object.user.get_full_name }}</h2>
+    <p>Date of Birth: {{ object.date_of_birth }}</p>
+    <p>Contact Info: {{ object.contact_info }}</p>
+    <!-- Display medical history -->
+    <h3>Medical History</h3>
+    {% for history in object.medicalhistory_set.all %}
+    <ul>
+        <li>Diagnoses: {{ history.diagnoses }}</li>
+        <li>Medications: {{ history.medications }}</li>
+        <li>Allergies: {{ history.allergies }}</li>
+        <li>Treatment History: {{ history.treatment_history }}</li>
+    </ul>
+    {% empty %}
+    <p>No medical history available.</p>
+    {% endfor %}
+    <!-- Display treatment plans -->
+    <h3>Treatment Plans</h3>
+    {% for plan in object.treatmentplan_set.all %}
+    <ul>
+        <li>Description: {{ plan.description }}</li>
+        <li>Start Date: {{ plan.start_date }}</li>
+        <li>End Date: {{ plan.end_date }}</li>
+    </ul>
+    {% empty %}
+    <p>No treatment plans available.</p>
+    {% endfor %}
+</div>
+{% endblock %}
