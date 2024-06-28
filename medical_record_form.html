@@ -1,0 +1,15 @@
+<!-- authentication/templates/authentication/patient/medical_record_form.html -->
+{% extends 'authentication/base.html' %}
+
+{% block title %}Medical Record{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>{% if object.pk %}Update{% else %}Create{% endif %} Medical Record</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-3">{% if object.pk %}Update{% else %}Create{% endif %}</button>
+    </form>
+</div>
+{% endblock %}

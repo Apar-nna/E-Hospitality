@@ -1,0 +1,68 @@
+<!-- authentication/templates/authentication/patient/appointment_create.html -->
+{% extends 'authentication/base.html' %}
+{% load static %}
+
+{% block title %}Appointment Booking{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Appointment Booking</h2>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_department">Department:</label>
+            {{ form.department }}
+            {% if form.department.errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.department.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_appointment_date">Appointment Date:</label>
+            {{ form.appointment_date }}
+            {% if form.appointment_date.errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.appointment_date.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_appointment_time">Appointment Time:</label>
+            {{ form.appointment_time }}
+            {% if form.appointment_time.errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.appointment_time.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_description">Description:</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.description.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-button mt-3">
+            <button type="submit" class="btn btn-primary">Book Appointment</button>
+        </div>
+    </form>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

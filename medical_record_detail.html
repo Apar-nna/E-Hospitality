@@ -1,0 +1,16 @@
+<!-- authentication/templates/authentication/patient/medical_record_detail.html -->
+{% extends 'authentication/base.html' %}
+
+{% block title %}Medical Record Detail{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Medical Record Detail</h2>
+    <p><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
+    <p><strong>Medications:</strong> {{ record.medications }}</p>
+    <p><strong>Allergies:</strong> {{ record.allergies }}</p>
+    <p><strong>Treatment History:</strong> {{ record.treatment_history }}</p>
+    <p><strong>Created At:</strong> {{ record.created_at }}</p>
+    <a href="{% url 'patient:medical-record-update' record.pk %}" class="btn btn-secondary btn-sm">Edit</a>
+</div>
+{% endblock %}

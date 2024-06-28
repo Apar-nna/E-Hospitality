@@ -1,0 +1,24 @@
+<!-- authentication/templates/authentication/patient/payment_list.html -->
+{% extends 'authentication/base.html' %}
+{% load static %}
+
+{% block title %}My Payments{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>My Payments</h2>
+    <ul class="list-group">
+        {% for payment in payments %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>
+                    Invoice Number: {{ payment.invoice_number }}<br>
+                    Amount: ${{ payment.amount }}<br>
+                    Payment Date: {{ payment.payment_date }}
+                </span>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No payments found.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+<!-- authentication/templates/authentication/patient/medical_record_list.html -->
+{% extends 'authentication/base.html' %}
+
+{% block title %}My Medical Records{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>My Medical Records</h2>
+    <ul class="list-group">
+        {% for record in records %}
+            <li class="list-group-item">
+                <a href="{% url 'patient:medical-record-detail' record.pk %}">
+                    {{ record.diagnosis }} - {{ record.created_at }}
+                </a>
+                <a href="{% url 'patient:medical-record-detail' pk=record.pk %}" class="btn btn-primary btn-sm">Details</a>
+
+
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

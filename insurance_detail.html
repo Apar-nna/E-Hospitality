@@ -1,0 +1,18 @@
+{% extends 'authentication/base.html' %}
+{% load static %}
+
+{% block title %}Insurance Details{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Insurance Details</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Insurance Provider: {{ object.provider_name }}</h5>
+            <p class="card-text">Policy Number: {{ object.policy_number }}</p>
+            <p class="card-text">Coverage Details: {{ object.coverage_details }}</p>
+            <a href="{% url 'patient:insurance-update' %}" class="btn btn-primary">Update Insurance Information</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

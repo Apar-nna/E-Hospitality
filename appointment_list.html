@@ -1,0 +1,26 @@
+<!-- authentication/templates/patients/appointment_list.html -->
+{% extends 'authentication/base.html' %}
+
+{% block title %}My Appointments{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>My Appointments</h2>
+    <ul class="list-group">
+        {% for appointment in appointments %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>
+                    {{ appointment.appointment_date }} at {{ appointment.appointment_time }} - {{ appointment.status }}
+                </span>
+                <span>
+                    <a href="{% url 'patient:appointment-reschedule' appointment.pk %}" class="btn btn-secondary btn-sm">Reschedule</a>
+                    <form action="{% url 'patient:appointment-cancel' appointment.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                    </form>
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

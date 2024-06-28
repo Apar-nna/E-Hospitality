@@ -1,0 +1,17 @@
+{% extends 'authentication/base.html' %}
+{% load static %}
+
+{% block title %}Billing Information{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Billing Information</h2>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}  {# Render all form fields as paragraphs #}
+        <div class="form-button mt-3">
+            <button type="submit" class="btn btn-primary">Submit Billing</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
