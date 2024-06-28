@@ -1,25 +1,37 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser
+from .models import Appointment, MedicalRecord, Billing, Payment, Insurance
 
-USER_TYPE_CHOICES = [
-    ('admin', 'Admin'),
-    ('doctor', 'Doctor'),
-    ('user', 'patient'),
-]
 
-class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    user_type = forms.ChoiceField(choices=USER_TYPE_CHOICES, required=True)
+class AppointmentForm(forms.ModelForm):
+    appointment_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    appointment_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}))
 
     class Meta:
-        model = CustomUser
-        fields = ("username", "email", "password1", "password2", "user_type")
+        model = Appointment
+        fields = ['department', 'appointment_date', 'appointment_time', 'description']
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.email = self.cleaned_data["email"]
-        user.user_type = self.cleaned_data["user_type"]
-        if commit:
-            user.save()
-        return user
+class MedicalRecordForm(forms.ModelForm):
+    class Meta:
+        model = MedicalRecord
+        fields = ['diagnosis', 'medications', 'allergies', 'treatment_history']
+
+class BillingForm(forms.ModelForm):
+    due_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    class Meta:
+        model = Billing
+        fields = ['invoice_number', 'amount', 'due_date']
+
+class PaymentForm(forms.ModelForm):
+    expiry_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    cvv = forms.CharField(max_length=4, widget=forms.TextInput(attrs={'type': 'text'}))
+
+    class Meta:
+        model = Payment
+        fields = ['amount_paid', 'expiry_date', 'cvv']
+
+class InsuranceForm(forms.ModelForm):
+    class Meta:
+        model = Insurance
+        fields = ['provider_name', 'policy_number', 'coverage_details']
+
+
